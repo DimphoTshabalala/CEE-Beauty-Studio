@@ -1,0 +1,12 @@
+# Payment / secret configuration
+payfast-config.php
+.env
+.env.*
+*.key
+*.pem
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/

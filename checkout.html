@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Checkout — CEE Beauty Studio."
+    >
+
+    <title>Checkout | CEE Beauty Studio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+    <!-- =========================================
+         CHECKOUT HEADER
+    ========================================== -->
+
+    <header class="checkout-header">
+
+        <a href="index.html" class="checkout-brand">
+            CEE Beauty Studio
+        </a>
+
+        <a href="index.html#shop" class="back-to-shop">
+            ← Continue Shopping
+        </a>
+
+    </header>
+
+
+    <!-- =========================================
+         CHECKOUT MAIN
+    ========================================== -->
+
+    <main class="checkout-page">
+
+        <div class="checkout-heading">
+
+            <p class="eyebrow">
+                CEE BEAUTY SHOP
+            </p>
+
+            <h1>
+                Checkout
+            </h1>
+
+            <p>
+                Complete your details below to place your order.
+            </p>
+
+        </div>
+
+
+        <div class="checkout-layout">
+
+
+            <!-- =====================================
+                 CUSTOMER DETAILS
+            ====================================== -->
+
+            <section class="checkout-form-section">
+
+                <form id="checkout-form" action="payment.php" method="POST">
+
+                    <!-- =================================
+                         CONTACT INFORMATION
+                    ================================== -->
+
+                    <div class="checkout-card">
+
+                        <div class="checkout-card-heading">
+
+                            <span>01</span>
+
+                            <div>
+
+                                <h2>
+                                    Contact Information
+                                </h2>
+
+                                <p>
+                                    How can we reach you?
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group full-width">
+
+                                <label for="fullName">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    name="fullName"
+                                    placeholder="Enter your full name"
+                                    autocomplete="name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="you@example.com"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="phone">
+                                    Phone / WhatsApp Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="071 000 0000"
+                                    autocomplete="tel"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         DELIVERY INFORMATION
+                    ================================== -->
+
+                    <div class="checkout-card">
+
+                        <div class="checkout-card-heading">
+
+                            <span>02</span>
+
+                            <div>
+
+                                <h2>
+                                    Delivery Information
+                                </h2>
+
+                                <p>
+                                    Where should we send your order?
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group full-width">
+
+                                <label for="address">
+                                    Street Address
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="address"
+                                    name="address"
+                                    placeholder="House number and street name"
+                                    autocomplete="street-address"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="suburb">
+                                    Suburb
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="suburb"
+                                    name="suburb"
+                                    placeholder="Suburb"
+                                    autocomplete="address-line2"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="city">
+                                    City
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    placeholder="City"
+                                    autocomplete="address-level2"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="province">
+                                    Province
+                                </label>
+
+                                <select
+                                    id="province"
+                                    name="province"
+                                    autocomplete="address-level1"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select province
+                                    </option>
+
+                                    <option value="Eastern Cape">
+                                        Eastern Cape
+                                    </option>
+
+                                    <option value="Free State">
+                                        Free State
+                                    </option>
+
+                                    <option value="Gauteng">
+                                        Gauteng
+                                    </option>
+
+                                    <option value="KwaZulu-Natal">
+                                        KwaZulu-Natal
+                                    </option>
+
+                                    <option value="Limpopo">
+                                        Limpopo
+                                    </option>
+
+                                    <option value="Mpumalanga">
+                                        Mpumalanga
+                                    </option>
+
+                                    <option value="Northern Cape">
+                                        Northern Cape
+                                    </option>
+
+                                    <option value="North West">
+                                        North West
+                                    </option>
+
+                                    <option value="Western Cape">
+                                        Western Cape
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="postalCode">
+                                    Postal Code
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="postalCode"
+                                    name="postalCode"
+                                    placeholder="0000"
+                                    maxlength="4"
+                                    inputmode="numeric"
+                                    autocomplete="postal-code"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         DELIVERY METHOD
+                    ================================== -->
+
+                    <div class="checkout-card">
+
+                        <div class="checkout-card-heading">
+
+                            <span>03</span>
+
+                            <div>
+
+                                <h2>
+                                    Delivery Method
+                                </h2>
+
+                                <p>
+                                    Nationwide delivery is available.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="delivery-option">
+
+                            <input
+                                type="radio"
+                                name="delivery"
+                                value="courier"
+                                checked
+                            >
+
+                            <div>
+
+                                <strong>
+                                    The Courier Guy
+                                </strong>
+
+                                <span>
+                                    Nationwide delivery
+                                </span>
+
+                            </div>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- =================================
+                         PAYMENT
+                    ================================== -->
+
+                    <div class="checkout-card">
+
+                        <div class="checkout-card-heading">
+
+                            <span>04</span>
+
+                            <div>
+
+                                <h2>
+                                    Payment
+                                </h2>
+
+                                <p>
+                                    Secure payment will be completed next.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="payment-placeholder">
+
+                            <div class="payment-icon">
+                                💳
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Online Payment
+                                </h3>
+
+                                <p>
+                                    Your order details will be confirmed
+                                    before proceeding to secure payment.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         FORM MESSAGE
+                    ================================== -->
+
+                    <div
+                        id="checkout-message"
+                        class="checkout-message"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <!-- =================================
+                         SUBMIT
+                    ================================== -->
+
+                    <button
+                        type="submit"
+                        class="button button-primary place-order-button"
+                    >
+                        Continue to Payment
+                    </button>
+
+
+                </form>
+
+            </section>
+
+
+            <!-- =====================================
+                 ORDER SUMMARY
+            ====================================== -->
+
+            <aside class="checkout-summary">
+
+                <div class="checkout-summary-card">
+
+                    <div class="summary-heading">
+
+                        <p class="eyebrow">
+                            YOUR ORDER
+                        </p>
+
+                        <h2>
+                            Order Summary
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        id="checkout-items"
+                        class="checkout-items"
+                    >
+                        <!-- Products inserted by JavaScript -->
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong id="checkout-subtotal">
+                            R0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <span class="delivery-pending">
+                            Calculated at checkout
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <div class="summary-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong id="checkout-total">
+                            R0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="checkout-note">
+
+                        <span>✓</span>
+
+                        <p>
+                            Nationwide delivery available via
+                            The Courier Guy.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="index.html#shop"
+                    class="summary-continue"
+                >
+                    ← Continue Shopping
+                </a>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <div class="footer-brand">
+            CEE Beauty Studio
+        </div>
+
+        <p>
+            Luxury Hair. Luxury You.
+        </p>
+
+        <p class="copyright">
+            &copy; 2026 CEE Beauty Studio.
+            All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- Main JavaScript -->
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>

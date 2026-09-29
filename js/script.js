@@ -374,11 +374,13 @@ if (checkoutButton) {
     });
 }
 
+
 /* =========================================
    INITIAL CART LOAD
 ========================================= */
 
 updateCart();
+
 
 /* =========================================
    CHECKOUT PAGE
@@ -489,6 +491,7 @@ function updateCheckoutSummary() {
 
 updateCheckoutSummary();
 
+
 /* =========================================
    CHECKOUT FORM
 ========================================= */
@@ -496,6 +499,7 @@ updateCheckoutSummary();
 const checkoutForm = document.querySelector("#checkout-form");
 const checkoutMessage = document.querySelector("#checkout-message");
 const placeOrderButton = document.querySelector(".place-order-button");
+
 
 if (checkoutForm) {
 
@@ -643,10 +647,29 @@ if (checkoutForm) {
 
 
         /* -----------------------------------------
-           SUBMIT TO PAYMENT.PHP
+           TEMPORARY CHECKOUT CONFIRMATION
+           Netlify cannot process the old PHP payment
+           endpoint. Shopify/payment integration will
+           replace this section later.
         ----------------------------------------- */
 
-        checkoutForm.submit();
+        if (checkoutMessage) {
+
+            checkoutMessage.textContent =
+                "Your checkout details have been saved. Online payment is being finalized. Please contact CEE Beauty Studio on WhatsApp to complete your order.";
+
+            checkoutMessage.classList.remove("error");
+            checkoutMessage.classList.add("success");
+
+        }
+
+
+        if (placeOrderButton) {
+
+            placeOrderButton.disabled = true;
+            placeOrderButton.textContent = "Details Saved";
+
+        }
 
     });
 

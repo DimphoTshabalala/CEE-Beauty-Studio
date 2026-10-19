@@ -29,6 +29,194 @@ if (menuToggle && navLinks) {
     });
 }
 
+/* =========================================
+   PRODUCT IMAGE SLIDER
+========================================= */
+
+const productSliderTrack =
+    document.querySelector("#product-slider-track");
+
+const productSlides =
+    document.querySelectorAll(".product-slide");
+
+const productPrevButton =
+    document.querySelector(".product-slider-prev");
+
+const productNextButton =
+    document.querySelector(".product-slider-next");
+
+const productSliderDots =
+    document.querySelectorAll(".product-slider-dot");
+
+const productThumbnails =
+    document.querySelectorAll(".product-thumbnail");
+
+let currentProductSlide = 0;
+
+
+/* -----------------------------------------
+   SHOW PRODUCT SLIDE
+----------------------------------------- */
+
+function showProductSlide(index) {
+
+    if (!productSliderTrack || productSlides.length === 0) {
+        return;
+    }
+
+    /* Keep index within available slides */
+
+    if (index < 0) {
+        index = productSlides.length - 1;
+    }
+
+    if (index >= productSlides.length) {
+        index = 0;
+    }
+
+    currentProductSlide = index;
+
+
+    /* Move slider */
+
+    productSliderTrack.style.transform =
+        `translateX(-${currentProductSlide * 100}%)`;
+
+
+    /* -----------------------------------------
+       UPDATE DOTS
+    ----------------------------------------- */
+
+    productSliderDots.forEach((dot, dotIndex) => {
+
+        const isActive =
+            dotIndex === currentProductSlide;
+
+        dot.classList.toggle("active", isActive);
+
+        dot.setAttribute(
+            "aria-current",
+            isActive ? "true" : "false"
+        );
+
+    });
+
+
+    /* -----------------------------------------
+       UPDATE THUMBNAILS
+    ----------------------------------------- */
+
+    productThumbnails.forEach((thumbnail, thumbnailIndex) => {
+
+        thumbnail.classList.toggle(
+            "active",
+            thumbnailIndex === currentProductSlide
+        );
+
+    });
+
+
+    /* -----------------------------------------
+       UPDATE SLIDES
+    ----------------------------------------- */
+
+    productSlides.forEach((slide, slideIndex) => {
+
+        slide.classList.toggle(
+            "active",
+            slideIndex === currentProductSlide
+        );
+
+    });
+
+}
+
+
+/* -----------------------------------------
+   PREVIOUS BUTTON
+----------------------------------------- */
+
+if (productPrevButton) {
+
+    productPrevButton.addEventListener(
+        "click",
+        () => {
+            showProductSlide(
+                currentProductSlide - 1
+            );
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   NEXT BUTTON
+----------------------------------------- */
+
+if (productNextButton) {
+
+    productNextButton.addEventListener(
+        "click",
+        () => {
+            showProductSlide(
+                currentProductSlide + 1
+            );
+        }
+    );
+
+}
+
+
+/* -----------------------------------------
+   SLIDER DOTS
+----------------------------------------- */
+
+productSliderDots.forEach((dot) => {
+
+    dot.addEventListener("click", () => {
+
+        const slideIndex =
+            Number(dot.dataset.slide);
+
+        if (!Number.isNaN(slideIndex)) {
+
+            showProductSlide(slideIndex);
+
+        }
+
+    });
+
+});
+
+
+/* -----------------------------------------
+   PRODUCT THUMBNAILS
+----------------------------------------- */
+
+productThumbnails.forEach((thumbnail) => {
+
+    thumbnail.addEventListener("click", () => {
+
+        const slideIndex =
+            Number(thumbnail.dataset.slide);
+
+        if (!Number.isNaN(slideIndex)) {
+
+            showProductSlide(slideIndex);
+
+        }
+
+    });
+
+});
+
+
+/* -----------------------------------------
+   INITIAL PRODUCT SLIDE
+----------------------------------------- */
+
+showProductSlide(0);
 
 /* =========================================
    SHOPPING CART ELEMENTS

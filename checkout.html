@@ -92,9 +92,10 @@
     data-netlify="true"
     netlify-honeypot="bot-field">
     <input type="hidden" name="form-name" value="cee-orders">
-    <input type="hidden" name="quantity">
+        <input type="hidden" name="quantity">
         <input type="hidden" name="orderItems">
         <input type="hidden" name="orderSubtotal">
+        <input type="hidden" name="orderDeliveryFee">
         <input type="hidden" name="orderTotal">
         <input type="hidden" name="orderCreatedAt">
         <input type="hidden" name="orderStatus">
@@ -533,9 +534,9 @@
                             Delivery
                         </span>
 
-                        <span class="delivery-pending">
-                            Calculated at checkout
-                        </span>
+                        <strong id ="checkout-delivery">
+                            R150
+                        </strong>
 
                     </div>
 

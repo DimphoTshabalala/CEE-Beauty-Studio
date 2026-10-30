@@ -768,8 +768,8 @@ if (checkoutForm) {
 
             if (checkoutMessage) {
                 checkoutMessage.textContent =
-                    "Your order has been received! Please complete payment using the payment instructions provided. Your order will be confirmed once payment is verified.";
-
+                    "Your order details have been submitted successfully! CEE Beauty Studio will contact you to confirm your delivery fee and provide payment instructions. Your order will only be confirmed once payment has been verified.";
+                    
                 checkoutMessage.classList.remove("error");
                 checkoutMessage.classList.add("success");
             }

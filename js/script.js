@@ -684,181 +684,115 @@ updateCheckoutSummary();
    CHECKOUT FORM
 ========================================= */
 
+
 const checkoutForm = document.querySelector("#checkout-form");
 const checkoutMessage = document.querySelector("#checkout-message");
 const placeOrderButton = document.querySelector(".place-order-button");
 
-
 if (checkoutForm) {
-
-    checkoutForm.addEventListener("submit", (event) => {
-
+    checkoutForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-
-        /* -----------------------------------------
-           CHECK THAT THE CART HAS PRODUCTS
-        ----------------------------------------- */
-
         if (cart.length === 0) {
-
-            if (checkoutMessage) {
-
-                checkoutMessage.textContent =
-                    "Your cart is empty. Please add a product before continuing.";
-
-                checkoutMessage.classList.remove("success");
-                checkoutMessage.classList.add("error");
-
-            }
-
+            checkoutMessage.textContent =
+                "Your cart is empty. Please add a product before continuing.";
+            checkoutMessage.classList.remove("success");
+            checkoutMessage.classList.add("error");
             return;
         }
-
-
-        /* -----------------------------------------
-           CHECK FORM VALIDATION
-        ----------------------------------------- */
 
         if (!checkoutForm.checkValidity()) {
-
             checkoutForm.reportValidity();
-
             return;
         }
 
-
-        /* -----------------------------------------
-           GET CART QUANTITY
-        ----------------------------------------- */
-
         let totalQuantity = 0;
-
-        cart.forEach((item) => {
-
-            totalQuantity += Number(item.quantity) || 0;
-
-        });
-
-
-        /* -----------------------------------------
-           ADD CART QUANTITY TO FORM
-        ----------------------------------------- */
-
-        let quantityInput =
-            checkoutForm.querySelector('input[name="quantity"]');
-
-        if (!quantityInput) {
-
-            quantityInput =
-                document.createElement("input");
-
-            quantityInput.type = "hidden";
-            quantityInput.name = "quantity";
-
-            checkoutForm.appendChild(quantityInput);
-
-        }
-
-        quantityInput.value = totalQuantity;
-
-
-        /* -----------------------------------------
-           SAVE ORDER DETAILS
-        ----------------------------------------- */
-
-        const formData = new FormData(checkoutForm);
-
-        const customerDetails = {
-
-            fullName: formData.get("fullName"),
-
-            email: formData.get("email"),
-
-            phone: formData.get("phone"),
-
-            address: formData.get("address"),
-
-            suburb: formData.get("suburb"),
-
-            city: formData.get("city"),
-
-            province: formData.get("province"),
-
-            postalCode: formData.get("postalCode"),
-
-            deliveryMethod: formData.get("delivery")
-
-        };
-
-
-        /* -----------------------------------------
-           CALCULATE SUBTOTAL
-        ----------------------------------------- */
-
         let subtotal = 0;
 
         cart.forEach((item) => {
-
-            subtotal +=
-                Number(item.price) *
-                Number(item.quantity);
-
+            totalQuantity += Number(item.quantity) || 0;
+            subtotal += Number(item.price) * Number(item.quantity);
         });
 
+        const formData = new FormData(checkoutForm);
 
-        /* -----------------------------------------
-           SAVE PENDING ORDER
-        ----------------------------------------- */
-
-        const pendingOrder = {
-
-            customer: customerDetails,
-
-            products: cart,
-
-            subtotal: subtotal,
-
-            delivery: null,
-
-            total: subtotal,
-
-            createdAt: new Date().toISOString()
-
-        };
-
-
-        localStorage.setItem(
-            "ceePendingOrder",
-            JSON.stringify(pendingOrder)
-        );
-
-
-        /* -----------------------------------------
-           TEMPORARY CHECKOUT CONFIRMATION
-           Netlify cannot process the old PHP payment
-           endpoint. Shopify/payment integration will
-           replace this section later.
-        ----------------------------------------- */
-
-        if (checkoutMessage) {
-
-            checkoutMessage.textContent =
-                "Your checkout details have been saved. Online payment is being finalized. Please contact CEE Beauty Studio on WhatsApp to complete your order.";
-
-            checkoutMessage.classList.remove("error");
-            checkoutMessage.classList.add("success");
-
-        }
-
+        formData.set("form-name", "cee-orders");
+        formData.set("quantity", totalQuantity);
+        formData.set("orderItems", JSON.stringify(cart));
+        formData.set("orderSubtotal", subtotal.toFixed(2));
+        formData.set("orderTotal", subtotal.toFixed(2));
+        formData.set("orderCreatedAt", new Date().toISOString());
+        formData.set("orderStatus", "Awaiting payment confirmation");
 
         if (placeOrderButton) {
-
             placeOrderButton.disabled = true;
-            placeOrderButton.textContent = "Details Saved";
-
+            placeOrderButton.textContent = "Submitting Order...";
         }
 
-    });
+        try {
+            const response = await fetch("/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams(formData).toString()
+            });
 
+            if (!response.ok) {
+                throw new Error("Order submission failed.");
+            }
+
+            const pendingOrder = {
+                customer: {
+                    fullName: formData.get("fullName"),
+                    email: formData.get("email"),
+                    phone: formData.get("phone"),
+                    address: formData.get("address"),
+                    suburb: formData.get("suburb"),
+                    city: formData.get("city"),
+                    province: formData.get("province"),
+                    postalCode: formData.get("postalCode"),
+                    deliveryMethod: formData.get("delivery")
+                },
+                products: cart,
+                subtotal: subtotal,
+                total: subtotal,
+                createdAt: new Date().toISOString(),
+                paymentStatus: "Awaiting confirmation"
+            };
+
+            localStorage.setItem(
+                "ceePendingOrder",
+                JSON.stringify(pendingOrder)
+            );
+
+            if (checkoutMessage) {
+                checkoutMessage.textContent =
+                    "Your order has been received! Please complete payment using the payment instructions provided. Your order will be confirmed once payment is verified.";
+
+                checkoutMessage.classList.remove("error");
+                checkoutMessage.classList.add("success");
+            }
+
+            if (placeOrderButton) {
+                placeOrderButton.textContent = "Order Submitted";
+            }
+
+        } catch (error) {
+            console.error("Checkout error:", error);
+
+            if (checkoutMessage) {
+                checkoutMessage.textContent =
+                    "We couldn't submit your order. Please try again or contact us on WhatsApp.";
+
+                checkoutMessage.classList.remove("success");
+                checkoutMessage.classList.add("error");
+            }
+
+            if (placeOrderButton) {
+                placeOrderButton.disabled = false;
+                placeOrderButton.textContent = "Continue to Payment";
+            }
+        }
+    });
 }

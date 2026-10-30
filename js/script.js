@@ -716,6 +716,7 @@ function updateCheckoutSummary() {
 updateCheckoutSummary();
 
 
+
 /* =========================================
    CHECKOUT FORM
 ========================================= */
@@ -737,17 +738,10 @@ if (checkoutForm) {
         event.preventDefault();
 
         if (cart.length === 0) {
-
-            if (checkoutMessage) {
-
-                checkoutMessage.textContent =
-                    "Your cart is empty. Please add a product before continuing.";
-
-                checkoutMessage.classList.remove("success");
-                checkoutMessage.classList.add("error");
-
-            }
-
+            checkoutMessage.textContent =
+                "Your cart is empty. Please add a product before continuing.";
+            checkoutMessage.classList.remove("success");
+            checkoutMessage.classList.add("error");
             return;
         }
 
@@ -755,7 +749,6 @@ if (checkoutForm) {
             checkoutForm.reportValidity();
             return;
         }
-
 
         /* CALCULATE ORDER TOTAL */
 
@@ -765,16 +758,16 @@ if (checkoutForm) {
         const deliveryFee = DELIVERY_FEE;
 
         cart.forEach((item) => {
-
             totalQuantity += Number(item.quantity) || 0;
-
-            subtotal +=
-                Number(item.price) * Number(item.quantity);
-
+            subtotal += Number(item.price) * Number(item.quantity);
         });
 
         const total = subtotal + deliveryFee;
 
+        /* GENERATE ORDER REFERENCE */
+
+        const orderReference =
+            `CEE-${Date.now()}`;
 
         /* PREPARE NETLIFY FORM DATA */
 
@@ -783,74 +776,42 @@ if (checkoutForm) {
         formData.set("form-name", "cee-orders");
         formData.set("quantity", totalQuantity);
         formData.set("orderItems", JSON.stringify(cart));
-
-        formData.set(
-            "orderSubtotal",
-            subtotal.toFixed(2)
-        );
-
-        formData.set(
-            "orderDeliveryFee",
-            deliveryFee.toFixed(2)
-        );
-
-        formData.set(
-            "orderTotal",
-            total.toFixed(2)
-        );
-
-        formData.set(
-            "orderCreatedAt",
-            new Date().toISOString()
-        );
-
-        formData.set(
-            "orderStatus",
-            "Awaiting payment confirmation"
-        );
-
-
-        /* DISABLE SUBMIT BUTTON */
+        formData.set("orderReference", orderReference);
+        formData.set("orderSubtotal", subtotal.toFixed(2));
+        formData.set("orderDeliveryFee", deliveryFee.toFixed(2));
+        formData.set("orderTotal", total.toFixed(2));
+        formData.set("orderCreatedAt", new Date().toISOString());
+        formData.set("orderStatus", "Awaiting payment confirmation");
 
         if (placeOrderButton) {
-
             placeOrderButton.disabled = true;
-
-            placeOrderButton.textContent =
-                "Submitting Order...";
-
+            placeOrderButton.textContent = "Submitting Order...";
         }
-
-
-        /* SUBMIT ORDER */
 
         try {
 
+            /* SUBMIT ORDER TO NETLIFY */
+
             const response = await fetch("/", {
-
                 method: "POST",
-
                 headers: {
                     "Content-Type":
                         "application/x-www-form-urlencoded"
                 },
-
                 body: new URLSearchParams(formData).toString()
-
             });
-
 
             if (!response.ok) {
                 throw new Error("Order submission failed.");
             }
 
-
-            /* SAVE PENDING ORDER */
+            /* PREPARE CUSTOMER ORDER */
 
             const pendingOrder = {
 
-                customer: {
+                orderReference: orderReference,
 
+                customer: {
                     fullName: formData.get("fullName"),
                     email: formData.get("email"),
                     phone: formData.get("phone"),
@@ -860,78 +821,81 @@ if (checkoutForm) {
                     province: formData.get("province"),
                     postalCode: formData.get("postalCode"),
                     deliveryMethod: formData.get("delivery")
-
                 },
 
                 products: cart,
-
                 subtotal: subtotal,
-
                 deliveryFee: deliveryFee,
-
                 total: total,
-
                 createdAt: new Date().toISOString(),
-
                 paymentStatus: "Awaiting confirmation"
 
             };
-
 
             localStorage.setItem(
                 "ceePendingOrder",
                 JSON.stringify(pendingOrder)
             );
 
+            /* SEND CUSTOMER CONFIRMATION EMAIL */
+
+            try {
+
+                const emailResponse = await fetch(
+                    "/.netlify/functions/send-order-confirmation",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(pendingOrder)
+                    }
+                );
+
+                if (!emailResponse.ok) {
+                    console.error(
+                        "Order was submitted, but confirmation email could not be sent."
+                    );
+                }
+
+            } catch (emailError) {
+
+                console.error(
+                    "Customer confirmation email error:",
+                    emailError
+                );
+
+            }
 
             /* SUCCESS MESSAGE */
 
             if (checkoutMessage) {
-
                 checkoutMessage.textContent =
-                    "Your order details have been submitted successfully! Your total includes the R150 delivery fee. CEE Beauty Studio will contact you with payment instructions. Your order will only be confirmed once payment has been verified.";
+                    "Your order has been received successfully! Your total includes the R150 delivery fee. CEE Beauty Studio will contact you with payment instructions. Your order will only be confirmed once payment has been verified.";
 
                 checkoutMessage.classList.remove("error");
-
                 checkoutMessage.classList.add("success");
-
             }
-
-
-            /* UPDATE BUTTON */
 
             if (placeOrderButton) {
-
-                placeOrderButton.textContent =
-                    "Order Submitted";
-
+                placeOrderButton.textContent = "Order Submitted";
             }
-
 
         } catch (error) {
 
             console.error("Checkout error:", error);
 
-
             if (checkoutMessage) {
-
                 checkoutMessage.textContent =
                     "We couldn't submit your order. Please try again or contact us on WhatsApp.";
 
                 checkoutMessage.classList.remove("success");
-
                 checkoutMessage.classList.add("error");
-
             }
 
-
             if (placeOrderButton) {
-
                 placeOrderButton.disabled = false;
-
-                placeOrderButton.textContent =
-                    "Continue to Payment";
-
+                placeOrderButton.textContent = "Continue to Payment";
             }
 
         }

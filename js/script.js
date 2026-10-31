@@ -903,3 +903,54 @@ if (checkoutForm) {
     });
 
 }
+
+
+
+/* =========================================
+   CEE BEAUTY STUDIO LAUNCH COUNTDOWN
+========================================= */
+
+const launchDate = new Date(2026, 9, 31, 10, 0, 0);
+
+function updateLaunchCountdown() {
+    const now = new Date();
+    const difference = launchDate - now;
+
+    const hoursElement = document.getElementById("countdownHours");
+    const minutesElement = document.getElementById("countdownMinutes");
+    const secondsElement = document.getElementById("countdownSeconds");
+    const messageElement = document.getElementById("countdownMessage");
+    const countdownElement = document.getElementById("launchCountdown");
+
+    if (!hoursElement || !minutesElement || !secondsElement) return;
+
+    if (difference <= 0) {
+        hoursElement.textContent = "00";
+        minutesElement.textContent = "00";
+        secondsElement.textContent = "00";
+
+        if (messageElement) {
+            messageElement.textContent = "WE'RE LIVE! SHOP NOW.";
+        }
+
+        if (countdownElement) {
+            countdownElement.querySelector(".countdown-label").textContent =
+                "CEE BEAUTY STUDIO IS NOW OPEN";
+        }
+
+        return;
+    }
+
+    const totalSeconds = Math.floor(difference / 1000);
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    hoursElement.textContent = String(hours).padStart(2, "0");
+    minutesElement.textContent = String(minutes).padStart(2, "0");
+    secondsElement.textContent = String(seconds).padStart(2, "0");
+}
+
+updateLaunchCountdown();
+setInterval(updateLaunchCountdown, 1000);

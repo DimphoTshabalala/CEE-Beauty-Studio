@@ -4082,3 +4082,89 @@ footer .copyright {
         padding: 8px 11px;
     }
 }
+
+
+
+/* =========================================
+   CEE BEAUTY STUDIO LAUNCH COUNTDOWN
+========================================= */
+
+.launch-countdown {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 30px;
+    padding: 22px 30px;
+    text-align: center;
+    background: #fbf6f0;
+    border: 1px solid #c9a477;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(80, 55, 40, 0.06);
+}
+
+.countdown-label {
+    margin-bottom: 15px;
+    color: #a47c60;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+.countdown-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.countdown-item span {
+    color: #654b3e;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.countdown-item small {
+    color: #a47c60;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.countdown-separator {
+    color: #c9a477;
+    font-size: 28px;
+    margin-top: -12px;
+}
+
+.countdown-message {
+    margin-top: 17px;
+    color: #80614e;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+    .launch-countdown {
+        padding: 18px 16px;
+        margin-bottom: 25px;
+    }
+
+    .countdown-timer {
+        gap: 10px;
+    }
+
+    .countdown-item span {
+        font-size: 29px;
+    }
+
+    .countdown-item small {
+        font-size: 8px;
+    }
+}

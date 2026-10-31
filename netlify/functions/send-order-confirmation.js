@@ -65,8 +65,13 @@ exports.handler = async (event) => {
         }, 0);
 
         const total = orderSubtotal + deliveryFee;
-        const orderReference =
-            order.orderReference || `CEE-${Date.now()}`;
+        
+const orderReference = order.orderReference;
+
+if (!orderReference) {
+    throw new Error("Missing order reference.");
+}
+
 
         const productRows = products.map((item) => {
             const productName = escapeHTML(
